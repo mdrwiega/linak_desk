@@ -1,8 +1,7 @@
 {
   "domain": "linak_desk_controller",
-  "name": "Linak Desk BT Controller",
+  "name": "Linak Desk DPG BT Controller",
   "documentation": "",
-  "requirements": [],
-  "codeowners": [],
-  "config_flow": true
+  "requirements": ["bluepy"],
+  "codeowners": []
 }
