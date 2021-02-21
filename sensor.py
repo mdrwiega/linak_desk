@@ -1,7 +1,6 @@
 """ The Linak desk height sensor platform"""
 
 import logging
-import json
 import voluptuous as vol
 
 from homeassistant.helpers.entity import Entity
