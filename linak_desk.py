@@ -20,14 +20,20 @@ class LinakDesk:
         _LOGGER.debug("LinakDesk initialization.")
 
         self.min_height = min_height
+        self.max_height = max_height
 
         try:
             self.peripheral = Peripheral(mac, "random")
+            self.connected = True
         except Exception as e:
             _LOGGER.error("LinakDesk connection error: " + str(e))
+            self.connected = False
 
     def read_desk_height_speed(self):
         """ Read the desk height and the speed from the Linak device """
+        if not self.connected:
+            return None, None
+
         try:
             data = self._read_characteristic(self.UUID_HEIGHT_SPEED)
             height = self._extract_height(data)
