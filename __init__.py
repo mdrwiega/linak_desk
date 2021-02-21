@@ -1,1 +1,1 @@
-"""The linak_desk_controller component."""
+"""The linak_desk component."""

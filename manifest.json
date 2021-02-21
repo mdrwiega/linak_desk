@@ -1,5 +1,5 @@
 {
-  "domain": "linak_desk_controller",
+  "domain": "linak_desk",
   "name": "Linak Desk DPG BT Controller",
   "documentation": "",
   "requirements": ["bluepy"],
