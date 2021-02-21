@@ -10,18 +10,16 @@ from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import CONF_MAC
 
 from .linak_desk import LinakDesk
+from .const import (
+    DOMAIN,
+    CONF_MIN_HEIGHT,
+    CONF_MAX_HEIGHT,
+    DEFAULT_MIN_HEIGHT,
+    DEFAULT_MAX_HEIGHT,
+    MAC_REGEX
+)
 
 _LOGGER = logging.getLogger(__name__)
-
-DEFAULT_MIN_HEIGHT = 0.62
-DEFAULT_MAX_HEIGHT = 1.28
-
-DOMAIN = 'linak_desk'
-
-CONF_MIN_HEIGHT = 'min_height_m'
-CONF_MAX_HEIGHT = 'max_height_m'
-
-MAC_REGEX = "(?i)^(?:[0-9A-F]{2}[:]){5}(?:[0-9A-F]{2})$"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_MAC): cv.matches_regex(MAC_REGEX),
@@ -32,7 +30,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the sensor platform."""
 
-    _LOGGER.debug("Initializing Linak SENSOR: %s", config)
+    _LOGGER.debug("Initializing Linak sensor: %s", config)
 
     if not config[CONF_MAC]:
         _LOGGER.error('Missing MAC address in configuration')
@@ -68,9 +66,7 @@ class LinakDeskSensor(Entity):
         return 'm'
 
     def update(self):
-        """Fetch new state data for the sensor.
-        This is the only method that should fetch new data for Home Assistant.
-        """
+        """Fetch new state data for the sensor."""
         desk = LinakDesk(self._mac, self._min_height, self._max_height)
         height, speed = desk.read_desk_height_speed()
         self._state = height
