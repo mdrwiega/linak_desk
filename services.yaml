@@ -1,1 +1,6 @@
-get_height:
+set_height:
+  description: Set the desk height
+  fields:
+    height:
+      description: Height in m
+      example: "1.0"

@@ -54,7 +54,7 @@ class LinakDesk:
         self.speed = 0
         self.connected = False
 
-        connection_retry_times = 5
+        connection_retry_times = 10
 
         for i in range(connection_retry_times):
             try:
