@@ -66,6 +66,9 @@ class LinakDeskSensor(Entity):
 
     def update(self):
         """Fetch new state data for the sensor."""
-        desk = LinakDesk(self._mac, self._min_height, self._max_height)
-        height, speed = desk.read_desk_height_speed()
-        self._state = height
+        try:
+            desk = LinakDesk(self._mac, self._min_height, self._max_height)
+            height, speed = desk.read_desk_height_speed()
+            self._state = height
+        except ConnectionError as e:
+            _LOGGER.error("Connection error: " + str(e))

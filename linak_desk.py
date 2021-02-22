@@ -4,7 +4,7 @@ import logging
 import struct
 import threading
 import asyncio
-from bluepy.btle import Peripheral, DefaultDelegate
+from bluepy.btle import Peripheral, DefaultDelegate, BTLEException
 from datetime import datetime, timedelta
 import time
 
@@ -54,17 +54,19 @@ class LinakDesk:
         self.speed = 0
         self.connected = False
 
-        for i in range(2):
+        connection_retry_times = 5
+
+        for i in range(connection_retry_times):
             try:
                 self.peripheral = Peripheral(mac, "random")
                 self.connected = True
                 break
-            except btle.BTLEException as e:
-                _LOGGER.debug("LinakDesk connection error: " + str(e))
-                time.sleep(0.5)            
+            except BTLEException as e:
+                _LOGGER.debug("LinakDesk connection error: " + str(e) + ' Try again.')
+                time.sleep(1.0)
 
         if not self.connected:
-            _LOGGER.error("LinakDesk connection error: " + str(e))
+            raise ConnectionError('Unable to connect to the Linak desk controller.')
 
         self.notification_handler = self.NotificationsHandler(self.peripheral, self.update)
         self.height_speed_handle = self._get_handle(self.UUID_HEIGHT_SPEED)
